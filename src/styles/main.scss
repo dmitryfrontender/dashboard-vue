@@ -1,0 +1,79 @@
+@import url('partials/glypher.scss');
+@import url('partials/reset.scss');
+@import url('partials/additional.scss');
+
+body {
+    height: 100vh;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+}
+
+.flex-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.justify-sb {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.align-center {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.justify-end {
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+.align-self-end {
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+}
+
+.fixed-to-top {
+    position: fixed;
+    z-index: 99;
+    top: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-orange {
+    color: #f58220;
+}
+
+.text-grey {
+    color: #bababa;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.text-bold {
+    font-weight: 700;
+}
