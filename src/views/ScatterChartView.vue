@@ -1,71 +1,105 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <span class="page-title">Data Table</span>
+            <span class="page-title">Scatter Chart</span>
         </div>
         <div class="card-body">
-            <div class="datatables-wrap">
-                <DataTable
-                    :columns="columns"
-                    ajax="/src/api/dataTable.json"
-                    class="display"
-                    width="100%"
-                >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
-                </DataTable>
+            <div class="chart-wrap">
+                <Scatter id="my-chart-id" :options="chartOptions" :data="chartData" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
-
-DataTable.use(DataTablesCore);
+import { Chart as ChartJS, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js'
+import { Scatter } from 'vue-chartjs'
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend)
 
 export default {
-    name: 'HomeView',
+    name: 'ScatterChartView',
     components: {
-        DataTable
+        Scatter
     },
     data() {
         return {
-            columns: [
-                { data: 'name', title: 'Name' },
-                { data: 'position', title: 'Position' },
-                { data: 'office', title: 'Office' },
-                { data: 'extn', title: 'Extension' },
-                { data: 'start_date', title: 'Start date' },
-                { data: 'salary', title: 'Salary' },
-            ]
+            chartData: {
+                datasets: [
+                    {
+                        label: 'Scatter Dataset 1',
+                        fill: false,
+                        borderColor: '#f87979',
+                        backgroundColor: '#f87979',
+                        data: [
+                            {
+                                x: -2,
+                                y: 4
+                            },
+                            {
+                                x: -1,
+                                y: 1
+                            },
+                            {
+                                x: 0,
+                                y: 0
+                            },
+                            {
+                                x: 1,
+                                y: 1
+                            },
+                            {
+                                x: 2,
+                                y: 4
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Scatter Dataset 2',
+                        fill: false,
+                        borderColor: '#7acbf9',
+                        backgroundColor: '#7acbf9',
+                        data: [
+                            {
+                                x: -2,
+                                y: -4
+                            },
+                            {
+                                x: -1,
+                                y: -1
+                            },
+                            {
+                                x: 0,
+                                y: 1
+                            },
+                            {
+                                x: 1,
+                                y: -1
+                            },
+                            {
+                                x: 2,
+                                y: -4
+                            }
+                        ]
+                    }
+                ]
+            },
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         }
-    }
+    },
+
+    mounted() {}
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'datatables.net-dt/css/jquery.dataTables';
-
 .card {
     background-color: #fff;
     -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -245,7 +279,11 @@ input[type='checkbox']:checked + label::before {
     height: 20px;
 }
 
-.datatables-wrap {
+.chart-wrap {
     padding: 20px;
+
+    canvas {
+        height: 500px;
+    }
 }
 </style>

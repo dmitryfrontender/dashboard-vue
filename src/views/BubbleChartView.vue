@@ -1,71 +1,87 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <span class="page-title">Data Table</span>
+            <span class="page-title">Bubble Chart</span>
         </div>
         <div class="card-body">
-            <div class="datatables-wrap">
-                <DataTable
-                    :columns="columns"
-                    ajax="/src/api/dataTable.json"
-                    class="display"
-                    width="100%"
-                >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
-                </DataTable>
+            <div class="chart-wrap">
+                <Bubble id="my-chart-id" :options="chartOptions" :data="chartData" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
+import { Bubble } from 'vue-chartjs'
+import { Chart as ChartJS, Tooltip, Legend, PointElement, LinearScale } from 'chart.js'
 
-DataTable.use(DataTablesCore);
+ChartJS.register(LinearScale, PointElement, Tooltip, Legend)
 
 export default {
-    name: 'HomeView',
+    name: 'BubbleChartView',
     components: {
-        DataTable
+        Bubble
     },
     data() {
         return {
-            columns: [
-                { data: 'name', title: 'Name' },
-                { data: 'position', title: 'Position' },
-                { data: 'office', title: 'Office' },
-                { data: 'extn', title: 'Extension' },
-                { data: 'start_date', title: 'Start date' },
-                { data: 'salary', title: 'Salary' },
-            ]
+            chartData: {
+                datasets: [
+                    {
+                        label: 'Data One',
+                        backgroundColor: '#f87979',
+                        data: [
+                            {
+                                x: 20,
+                                y: 25,
+                                r: 5
+                            },
+                            {
+                                x: 40,
+                                y: 10,
+                                r: 10
+                            },
+                            {
+                                x: 30,
+                                y: 22,
+                                r: 30
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Data Two',
+                        backgroundColor: '#7C8CF8',
+                        data: [
+                            {
+                                x: 10,
+                                y: 30,
+                                r: 15
+                            },
+                            {
+                                x: 20,
+                                y: 20,
+                                r: 10
+                            },
+                            {
+                                x: 15,
+                                y: 8,
+                                r: 30
+                            }
+                        ]
+                    }
+                ]
+            },
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
         }
-    }
+    },
+
+    mounted() {}
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'datatables.net-dt/css/jquery.dataTables';
-
 .card {
     background-color: #fff;
     -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -245,7 +261,11 @@ input[type='checkbox']:checked + label::before {
     height: 20px;
 }
 
-.datatables-wrap {
+.chart-wrap {
     padding: 20px;
+
+    canvas {
+        height: 500px;
+    }
 }
 </style>

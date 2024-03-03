@@ -1,71 +1,72 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <span class="page-title">Data Table</span>
+            <span class="page-title">Bar Chart</span>
         </div>
         <div class="card-body">
-            <div class="datatables-wrap">
-                <DataTable
-                    :columns="columns"
-                    ajax="/src/api/dataTable.json"
-                    class="display"
-                    width="100%"
-                >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
-                </DataTable>
+            <div class="chart-wrap">
+                <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
+import { Bar } from 'vue-chartjs'
+import {
+    Chart as ChartJS,
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale
+} from 'chart.js'
 
-DataTable.use(DataTablesCore);
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'HomeView',
+    name: 'BarChartView',
     components: {
-        DataTable
+        Bar
     },
     data() {
         return {
-            columns: [
-                { data: 'name', title: 'Name' },
-                { data: 'position', title: 'Position' },
-                { data: 'office', title: 'Office' },
-                { data: 'extn', title: 'Extension' },
-                { data: 'start_date', title: 'Start date' },
-                { data: 'salary', title: 'Salary' },
-            ]
+            chartData: {
+                labels: ['01', '02', '03', '04', '05', '06', '07', '08', '09'],
+                datasets: [
+                    {
+                        label: 'Signups',
+                        data: [100, 200, 220, 170, 130, 90, 156, 180, 130],
+                        backgroundColor: 'rgba(128, 191, 202, 1)'
+                    },
+                    {
+                        label: 'FTD',
+                        data: [200, 120, 180, 142, 121, 98, 170, 136, 157],
+                        backgroundColor: 'rgba(255, 154, 56, 1)'
+                    },
+                    {
+                        label: 'Other',
+                        data: [200, 120, 180, 142, 121, 98, 170, 136, 157],
+                        backgroundColor: 'green'
+                    }
+                ]
+            },
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'datatables.net-dt/css/jquery.dataTables';
-
 .card {
     background-color: #fff;
     -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -245,7 +246,11 @@ input[type='checkbox']:checked + label::before {
     height: 20px;
 }
 
-.datatables-wrap {
+.chart-wrap {
     padding: 20px;
+
+    canvas {
+        height: 500px;
+    }
 }
 </style>

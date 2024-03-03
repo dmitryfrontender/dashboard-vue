@@ -14,46 +14,46 @@
         </div>
         <div class="aside-menu">
             <ul>
-                <li class="active">
-                    <RouterLink to="/">
+                <li :class="$route.name === 'bar' ? 'active' : ''">
+                    <RouterLink to="/bar">
                         <IconComponent className="icon-general" />
-                        <span>General</span>
+                        <span>Bar chart</span>
                     </RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="">
+                <li :class="$route.name === 'line' ? 'active' : ''">
+                    <RouterLink to="/line">
                         <IconComponent className="icon-details" />
-                        <span>Details</span>
+                        <span>Line chart</span>
                     </RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="/links">
+                <li :class="$route.name === 'scatter' ? 'active' : ''">
+                    <RouterLink to="/scatter">
                         <IconComponent className="icon-links" />
-                        <span>Links</span>
+                        <span>Scatter chart</span>
                     </RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="">
+                <li :class="$route.name === 'bubble' ? 'active' : ''">
+                    <RouterLink to="/bubble">
                         <IconComponent className="icon-banners" />
-                        <span>Banners</span>
+                        <span>Bubble chart</span>
                     </RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="">
+                <li :class="$route.name === 'doughnut' ? 'active' : ''">
+                    <RouterLink to="/doughnut">
                         <IconComponent className="icon-personaldata" />
-                        <span>Personal data</span>
+                        <span>Doughnut chart</span>
                     </RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="">
+                <li :class="$route.name === 'polar' ? 'active' : ''">
+                    <RouterLink to="/polar">
                         <IconComponent className="icon-payout" />
-                        <span>Payout</span>
+                        <span>Polar area chart</span>
                     </RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="">
+                <li :class="$route.name === 'radar' ? 'active' : ''">
+                    <RouterLink to="/radar">
                         <IconComponent className="icon-postback" />
-                        <span>Postback</span>
+                        <span>Radar chart</span>
                     </RouterLink>
                 </li>
             </ul>
@@ -67,7 +67,7 @@
                     <img src="@/assets/img/foto-one.png" alt="">
                 </div>
                 <div class="circle"></div>
-                <RouterLink to="">Mikhael E.</RouterLink>
+                <RouterLink to="/">Mikhael E.</RouterLink>
             </div>
         </div>
     </aside>

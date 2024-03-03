@@ -1,71 +1,50 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <span class="page-title">Data Table</span>
+            <span class="page-title">Doughnut Chart</span>
         </div>
         <div class="card-body">
-            <div class="datatables-wrap">
-                <DataTable
-                    :columns="columns"
-                    ajax="/src/api/dataTable.json"
-                    class="display"
-                    width="100%"
-                >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
-                </DataTable>
+            <div class="chart-wrap">
+                <Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Doughnut } from 'vue-chartjs'
 
-DataTable.use(DataTablesCore);
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default {
-    name: 'HomeView',
+    name: 'DoughnutChartView',
     components: {
-        DataTable
+        Doughnut
     },
     data() {
         return {
-            columns: [
-                { data: 'name', title: 'Name' },
-                { data: 'position', title: 'Position' },
-                { data: 'office', title: 'Office' },
-                { data: 'extn', title: 'Extension' },
-                { data: 'start_date', title: 'Start date' },
-                { data: 'salary', title: 'Salary' },
-            ]
+            chartData: {
+                labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+                datasets: [
+                    {
+                        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+                        data: [40, 20, 80, 10]
+                    }
+                ]
+            },
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
         }
-    }
+    },
+
+    mounted() {}
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'datatables.net-dt/css/jquery.dataTables';
-
 .card {
     background-color: #fff;
     -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -245,7 +224,11 @@ input[type='checkbox']:checked + label::before {
     height: 20px;
 }
 
-.datatables-wrap {
+.chart-wrap {
     padding: 20px;
+
+    canvas {
+        height: 500px;
+    }
 }
 </style>

@@ -1,71 +1,73 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <span class="page-title">General statistic</span>
-        </div>
-        <div class="card-date text-center">
-            <form class="datepicker-form">
-                <div class="date-input-wrap">
-                    <input type="date" name="from" id="from" />
-                    <input type="date" name="to" id="to" />
-                    <!-- <label for="to">
-                        <IconComponent className="icon-calendar" />
-                    </label> -->
-                </div>
-                <button class="btn btn-action">
-                    <IconComponent className="icon-refresh" />
-                </button>
-            </form>
+            <span class="page-title">Radar Chart</span>
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Bar
-                    id="my-chart-id"
-                    :options="chartOptions"
-                    :data="chartData"
-                />
+                <Radar id="my-chart-id" :options="chartOptions" :data="chartData" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import IconComponent from '@/components/shared/IconComponent.vue';
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import {
+    Chart as ChartJS,
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Tooltip,
+    Legend
+} from 'chart.js'
+import { Radar } from 'vue-chartjs'
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend)
 
 export default {
-    name: 'HomeView',
+    name: 'RadarChartView',
     components: {
-        Bar,
-        IconComponent
+        Radar
     },
     data() {
         return {
             chartData: {
-                labels: ['01', '02', '03', '04', '05', '06', '07', '08', '09'],
+                labels: [
+                    'Eating',
+                    'Drinking',
+                    'Sleeping',
+                    'Designing',
+                    'Coding',
+                    'Cycling',
+                    'Running'
+                ],
                 datasets: [
                     {
-                        label: 'Signups',
-                        data: [100, 200, 220, 170, 130, 90, 156, 180, 130],
-                        backgroundColor: 'rgba(128, 191, 202, 1)'
+                        label: 'My First dataset',
+                        backgroundColor: 'rgba(179,181,198,0.2)',
+                        borderColor: 'rgba(179,181,198,1)',
+                        pointBackgroundColor: 'rgba(179,181,198,1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(179,181,198,1)',
+                        data: [65, 59, 90, 81, 56, 55, 40]
                     },
                     {
-                        label: 'FTD',
-                        data: [200, 120, 180, 142, 121, 98, 170, 136, 157],
-                        backgroundColor: 'rgba(255, 154, 56, 1)'
-                    },
-                    {
-                        label: 'Other',
-                        data: [200, 120, 180, 142, 121, 98, 170, 136, 157],
-                        backgroundColor: 'green'
+                        label: 'My Second dataset',
+                        backgroundColor: 'rgba(255,99,132,0.2)',
+                        borderColor: 'rgba(255,99,132,1)',
+                        pointBackgroundColor: 'rgba(255,99,132,1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(255,99,132,1)',
+                        data: [28, 48, 40, 19, 96, 27, 100]
                     }
                 ]
             },
             chartOptions: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true
@@ -73,7 +75,9 @@ export default {
                 }
             }
         }
-    }
+    },
+
+    mounted() {}
 }
 </script>
 
@@ -259,5 +263,9 @@ input[type='checkbox']:checked + label::before {
 
 .chart-wrap {
     padding: 20px;
+
+    canvas {
+        height: 500px;
+    }
 }
 </style>

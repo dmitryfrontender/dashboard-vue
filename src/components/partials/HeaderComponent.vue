@@ -40,7 +40,7 @@
             </div>
             <div class="user-control">
                 <IconComponent className="icon-profile" />
-                <span class="blue-text">Leonardo Dicaprio</span>
+                <span class="blue-text">Mikhael E.</span>
             </div>
             <div class="user-control">
                 <IconComponent className="icon-quit" />

@@ -1,71 +1,77 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <span class="page-title">Data Table</span>
+            <span class="page-title">Polar Area Chart</span>
         </div>
         <div class="card-body">
-            <div class="datatables-wrap">
-                <DataTable
-                    :columns="columns"
-                    ajax="/src/api/dataTable.json"
-                    class="display"
-                    width="100%"
-                >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Extn.</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
-                </DataTable>
+            <div class="chart-wrap">
+                <PolarArea id="my-chart-id" :options="chartOptions" :data="chartData" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
+import { Chart as ChartJS, RadialLinearScale, ArcElement, Tooltip, Legend } from 'chart.js'
+import { PolarArea } from 'vue-chartjs'
 
-DataTable.use(DataTablesCore);
+ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend)
 
 export default {
-    name: 'HomeView',
+    name: 'PolarAreaChartView',
     components: {
-        DataTable
+        PolarArea
     },
     data() {
         return {
-            columns: [
-                { data: 'name', title: 'Name' },
-                { data: 'position', title: 'Position' },
-                { data: 'office', title: 'Office' },
-                { data: 'extn', title: 'Extension' },
-                { data: 'start_date', title: 'Start date' },
-                { data: 'salary', title: 'Salary' },
-            ]
+            chartData: {
+                labels: [
+                    'Eating',
+                    'Drinking',
+                    'Sleeping',
+                    'Designing',
+                    'Coding',
+                    'Cycling',
+                    'Running'
+                ],
+                datasets: [
+                    {
+                        label: 'My First dataset',
+                        backgroundColor: 'rgba(179,181,198,0.2)',
+                        pointBackgroundColor: 'rgba(179,181,198,1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(179,181,198,1)',
+                        data: [65, 59, 90, 81, 56, 55, 40]
+                    },
+                    {
+                        label: 'My Second dataset',
+                        backgroundColor: 'rgba(255,99,132,0.2)',
+                        pointBackgroundColor: 'rgba(255,99,132,1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(255,99,132,1)',
+                        data: [28, 48, 40, 19, 96, 27, 100]
+                    }
+                ]
+            },
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         }
-    }
+    },
+
+    mounted() {}
 }
 </script>
 
 <style lang="scss" scoped>
-@import 'datatables.net-dt/css/jquery.dataTables';
-
 .card {
     background-color: #fff;
     -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -245,7 +251,11 @@ input[type='checkbox']:checked + label::before {
     height: 20px;
 }
 
-.datatables-wrap {
+.chart-wrap {
     padding: 20px;
+
+    canvas {
+        height: 500px;
+    }
 }
 </style>
