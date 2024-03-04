@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Radar v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+                <Radar v-if="getRadarChartData" id="my-chart-id" :options="getRadarChartData.options" :data="getRadarChartData.data" />
 
                 <template v-else>
                     <p>No data retrieved yet</p>
@@ -19,7 +19,9 @@
 
 <script>
 import { Radar } from 'vue-chartjs'
-import axios from 'axios';
+
+import { mapActions, mapState } from 'pinia'
+import { globalStore } from '@/stores/store'
 
 import {
     Chart as ChartJS,
@@ -38,16 +40,13 @@ export default {
     components: {
         Radar
     },
-    data() {
-        return {
-            chartData: false
-        }
+    computed: {
+        ...mapState(globalStore, ['getRadarChartData']),
     },
     methods: {
+        ...mapActions(globalStore, ['retrieveRadarChartData']),
         retrieveData: function () {
-            axios.get('/api/radarChartData.json').then((response) => {
-                this.chartData = response.data;
-            })
+            this.retrieveRadarChartData()
         }
     }
 }

@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Bar v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+                <Bar v-if="getBarChartData" id="my-chart-id" :options="getBarChartData.options" :data="getBarChartData.data" />
 
                 <template v-else>
                     <p>No data retrieved yet</p>
@@ -19,7 +19,9 @@
 
 <script>
 import { Bar } from 'vue-chartjs'
-import axios from 'axios';
+
+import { mapActions, mapState } from 'pinia'
+import { globalStore } from '@/stores/store'
 
 import {
     Chart as ChartJS,
@@ -38,16 +40,13 @@ export default {
     components: {
         Bar
     },
-    data() {
-        return {
-            chartData: false
-        }
+    computed: {
+        ...mapState(globalStore, ['getBarChartData']),
     },
     methods: {
+        ...mapActions(globalStore, ['retrieveBarChartData']),
         retrieveData: function () {
-            axios.get('/api/barChartData.json').then((response) => {
-                this.chartData = response.data;
-            })
+            this.retrieveBarChartData()
         }
     }
 }

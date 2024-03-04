@@ -379,6 +379,8 @@ nav .pagination li a:hover {
       -ms-flex-align: center;
           align-items: center;
   padding-left: 20px;
+  width: 150px;
+  min-height: auto;
 }
 
 ._mobileSidebar #aside .aside-menu li a i {

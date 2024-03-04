@@ -6,9 +6,9 @@
         <div class="card-body">
             <div class="datatables-wrap">
                 <DataTable
-                    v-if="dataTableData"
-                    :columns="dataTableData.columns"
-                    :data="dataTableData.data"
+                    v-if="getDataTableData"
+                    :columns="getDataTableData.columns"
+                    :data="getDataTableData.data"
                     class="display"
                     width="100%"
                 >
@@ -47,7 +47,9 @@
 <script>
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
-import axios from 'axios';
+
+import { mapActions, mapState } from 'pinia'
+import { globalStore } from '@/stores/store'
 
 DataTable.use(DataTablesCore);
 
@@ -56,16 +58,13 @@ export default {
     components: {
         DataTable
     },
-    data() {
-        return {
-            dataTableData: false
-        }
+    computed: {
+        ...mapState(globalStore, ['getDataTableData']),
     },
     methods: {
+        ...mapActions(globalStore, ['retrieveDataTableData']),
         retrieveData: function () {
-            axios.get('/api/dataTable.json').then((response) => {
-                this.dataTableData = response.data;
-            })
+            this.retrieveDataTableData()
         }
     }
 }

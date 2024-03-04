@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Bubble v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+                <Bubble v-if="getBubbleChartData" id="my-chart-id" :options="getBubbleChartData.options" :data="getBubbleChartData.data" />
 
                 <template v-else>
                     <p>No data retrieved yet</p>
@@ -19,7 +19,9 @@
 
 <script>
 import { Bubble } from 'vue-chartjs'
-import axios from 'axios';
+
+import { mapActions, mapState } from 'pinia'
+import { globalStore } from '@/stores/store'
 
 import { Chart as ChartJS, Tooltip, Legend, PointElement, LinearScale } from 'chart.js'
 
@@ -30,16 +32,13 @@ export default {
     components: {
         Bubble
     },
-    data() {
-        return {
-            chartData: false
-        }
+    computed: {
+        ...mapState(globalStore, ['getBubbleChartData']),
     },
     methods: {
+        ...mapActions(globalStore, ['retrieveBubbleChartData']),
         retrieveData: function () {
-            axios.get('/api/bubbleChartData.json').then((response) => {
-                this.chartData = response.data;
-            })
+            this.retrieveBubbleChartData()
         }
     }
 }

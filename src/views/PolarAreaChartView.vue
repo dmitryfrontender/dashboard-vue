@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <PolarArea v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+                <PolarArea v-if="getPolarChartData" id="my-chart-id" :options="getPolarChartData.options" :data="getPolarChartData.data" />
 
                 <template v-else>
                     <p>No data retrieved yet</p>
@@ -19,7 +19,9 @@
 
 <script>
 import { PolarArea } from 'vue-chartjs'
-import axios from 'axios';
+
+import { mapActions, mapState } from 'pinia'
+import { globalStore } from '@/stores/store'
 
 import { Chart as ChartJS, RadialLinearScale, ArcElement, Tooltip, Legend } from 'chart.js'
 
@@ -30,16 +32,13 @@ export default {
     components: {
         PolarArea
     },
-    data() {
-        return {
-            chartData: false
-        }
+    computed: {
+        ...mapState(globalStore, ['getPolarChartData']),
     },
     methods: {
+        ...mapActions(globalStore, ['retrievePolarChartData']),
         retrieveData: function () {
-            axios.get('/api/polarAreaChartData.json').then((response) => {
-                this.chartData = response.data;
-            })
+            this.retrievePolarChartData()
         }
     }
 }

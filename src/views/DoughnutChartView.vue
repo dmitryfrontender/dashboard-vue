@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Doughnut v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data"/>
+                <Doughnut v-if="getDoughnutChartData" id="my-chart-id" :options="getDoughnutChartData.options" :data="getDoughnutChartData.data"/>
 
                 <template v-else>
                     <p>No data retrieved yet</p>
@@ -19,7 +19,9 @@
 
 <script>
 import { Doughnut } from 'vue-chartjs'
-import axios from 'axios';
+
+import { mapActions, mapState } from 'pinia'
+import { globalStore } from '@/stores/store'
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 
@@ -30,16 +32,13 @@ export default {
     components: {
         Doughnut
     },
-    data() {
-        return {
-            chartData: false
-        }
+    computed: {
+        ...mapState(globalStore, ['getDoughnutChartData']),
     },
     methods: {
+        ...mapActions(globalStore, ['retrieveDoughnutChartData']),
         retrieveData: function () {
-            axios.get('/api/doughnutChartData.json').then((response) => {
-                this.chartData = response.data;
-            })
+            this.retrieveDoughnutChartData()
         }
     }
 }

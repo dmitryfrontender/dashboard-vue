@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Scatter v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+                <Scatter v-if="getScatterChartData" id="my-chart-id" :options="getScatterChartData.options" :data="getScatterChartData.data" />
 
                 <template v-else>
                     <p>No data retrieved yet</p>
@@ -19,7 +19,9 @@
 
 <script>
 import { Scatter } from 'vue-chartjs'
-import axios from 'axios';
+
+import { mapActions, mapState } from 'pinia'
+import { globalStore } from '@/stores/store'
 
 import { Chart as ChartJS, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js'
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend)
@@ -29,16 +31,13 @@ export default {
     components: {
         Scatter
     },
-    data() {
-        return {
-            chartData: false
-        }
+    computed: {
+        ...mapState(globalStore, ['getScatterChartData']),
     },
     methods: {
+        ...mapActions(globalStore, ['retrieveScatterChartData']),
         retrieveData: function () {
-            axios.get('/api/barChartData.json').then((response) => {
-                this.chartData = response.data;
-            })
+            this.retrieveScatterChartData()
         }
     }
 }

@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <LineChart v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+                <LineChart v-if="getLineChartData" id="my-chart-id" :options="getLineChartData.options" :data="getLineChartData.data" />
 
                 <template v-else>
                     <p>No data retrieved yet</p>
@@ -19,7 +19,9 @@
 
 <script>
 import { Line as LineChart } from 'vue-chartjs'
-import axios from 'axios';
+
+import { mapActions, mapState } from 'pinia'
+import { globalStore } from '@/stores/store'
 
 import {
     Chart as ChartJS,
@@ -39,16 +41,13 @@ export default {
     components: {
         LineChart
     },
-    data() {
-        return {
-            chartData: false
-        }
+    computed: {
+        ...mapState(globalStore, ['getLineChartData']),
     },
     methods: {
+        ...mapActions(globalStore, ['retrieveLineChartData']),
         retrieveData: function () {
-            axios.get('/api/lineChartData.json').then((response) => {
-                this.chartData = response.data;
-            })
+            this.retrieveLineChartData()
         }
     }
 }
