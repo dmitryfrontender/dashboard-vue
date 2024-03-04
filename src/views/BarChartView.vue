@@ -5,7 +5,13 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+                <Bar v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+
+                <template v-else>
+                    <p>No data retrieved yet</p>
+                    <br />
+                    <button class="btn-action" @click="retrieveData">Get data</button>
+                </template>
             </div>
         </div>
     </div>
@@ -13,6 +19,8 @@
 
 <script>
 import { Bar } from 'vue-chartjs'
+import axios from 'axios';
+
 import {
     Chart as ChartJS,
     Title,
@@ -32,35 +40,14 @@ export default {
     },
     data() {
         return {
-            chartData: {
-                labels: ['01', '02', '03', '04', '05', '06', '07', '08', '09'],
-                datasets: [
-                    {
-                        label: 'Signups',
-                        data: [100, 200, 220, 170, 130, 90, 156, 180, 130],
-                        backgroundColor: 'rgba(128, 191, 202, 1)'
-                    },
-                    {
-                        label: 'FTD',
-                        data: [200, 120, 180, 142, 121, 98, 170, 136, 157],
-                        backgroundColor: 'rgba(255, 154, 56, 1)'
-                    },
-                    {
-                        label: 'Other',
-                        data: [200, 120, 180, 142, 121, 98, 170, 136, 157],
-                        backgroundColor: 'green'
-                    }
-                ]
-            },
-            chartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+            chartData: false
+        }
+    },
+    methods: {
+        retrieveData: function () {
+            axios.get('/api/barChartData.json').then((response) => {
+                this.chartData = response.data;
+            })
         }
     }
 }

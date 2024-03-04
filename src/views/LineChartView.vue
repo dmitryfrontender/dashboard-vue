@@ -5,7 +5,13 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <LineChart id="my-chart-id" :options="chartOptions" :data="chartData" />
+                <LineChart v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+
+                <template v-else>
+                    <p>No data retrieved yet</p>
+                    <br />
+                    <button class="btn-action" @click="retrieveData">Get data</button>
+                </template>
             </div>
         </div>
     </div>
@@ -13,6 +19,8 @@
 
 <script>
 import { Line as LineChart } from 'vue-chartjs'
+import axios from 'axios';
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -33,24 +41,16 @@ export default {
     },
     data() {
         return {
-            chartData: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [
-                    {
-                        label: 'Data One',
-                        backgroundColor: '#f87979',
-                        data: [40, 39, 10, 40, 39, 80, 40]
-                    }
-                ]
-            },
-            chartOptions: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
+            chartData: false
         }
     },
-
-    mounted() {}
+    methods: {
+        retrieveData: function () {
+            axios.get('/api/lineChartData.json').then((response) => {
+                this.chartData = response.data;
+            })
+        }
+    }
 }
 </script>
 

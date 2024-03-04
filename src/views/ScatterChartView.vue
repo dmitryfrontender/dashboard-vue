@@ -5,15 +5,23 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Scatter id="my-chart-id" :options="chartOptions" :data="chartData" />
+                <Scatter v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+
+                <template v-else>
+                    <p>No data retrieved yet</p>
+                    <br />
+                    <button class="btn-action" @click="retrieveData">Get data</button>
+                </template>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { Chart as ChartJS, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js'
 import { Scatter } from 'vue-chartjs'
+import axios from 'axios';
+
+import { Chart as ChartJS, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js'
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend)
 
 export default {
@@ -23,79 +31,16 @@ export default {
     },
     data() {
         return {
-            chartData: {
-                datasets: [
-                    {
-                        label: 'Scatter Dataset 1',
-                        fill: false,
-                        borderColor: '#f87979',
-                        backgroundColor: '#f87979',
-                        data: [
-                            {
-                                x: -2,
-                                y: 4
-                            },
-                            {
-                                x: -1,
-                                y: 1
-                            },
-                            {
-                                x: 0,
-                                y: 0
-                            },
-                            {
-                                x: 1,
-                                y: 1
-                            },
-                            {
-                                x: 2,
-                                y: 4
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Scatter Dataset 2',
-                        fill: false,
-                        borderColor: '#7acbf9',
-                        backgroundColor: '#7acbf9',
-                        data: [
-                            {
-                                x: -2,
-                                y: -4
-                            },
-                            {
-                                x: -1,
-                                y: -1
-                            },
-                            {
-                                x: 0,
-                                y: 1
-                            },
-                            {
-                                x: 1,
-                                y: -1
-                            },
-                            {
-                                x: 2,
-                                y: -4
-                            }
-                        ]
-                    }
-                ]
-            },
-            chartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+            chartData: false
         }
     },
-
-    mounted() {}
+    methods: {
+        retrieveData: function () {
+            axios.get('/api/barChartData.json').then((response) => {
+                this.chartData = response.data;
+            })
+        }
+    }
 }
 </script>
 

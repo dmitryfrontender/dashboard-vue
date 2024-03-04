@@ -5,13 +5,22 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Radar id="my-chart-id" :options="chartOptions" :data="chartData" />
+                <Radar v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data" />
+
+                <template v-else>
+                    <p>No data retrieved yet</p>
+                    <br />
+                    <button class="btn-action" @click="retrieveData">Get data</button>
+                </template>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { Radar } from 'vue-chartjs'
+import axios from 'axios';
+
 import {
     Chart as ChartJS,
     RadialLinearScale,
@@ -21,7 +30,6 @@ import {
     Tooltip,
     Legend
 } from 'chart.js'
-import { Radar } from 'vue-chartjs'
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend)
 
@@ -32,52 +40,16 @@ export default {
     },
     data() {
         return {
-            chartData: {
-                labels: [
-                    'Eating',
-                    'Drinking',
-                    'Sleeping',
-                    'Designing',
-                    'Coding',
-                    'Cycling',
-                    'Running'
-                ],
-                datasets: [
-                    {
-                        label: 'My First dataset',
-                        backgroundColor: 'rgba(179,181,198,0.2)',
-                        borderColor: 'rgba(179,181,198,1)',
-                        pointBackgroundColor: 'rgba(179,181,198,1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(179,181,198,1)',
-                        data: [65, 59, 90, 81, 56, 55, 40]
-                    },
-                    {
-                        label: 'My Second dataset',
-                        backgroundColor: 'rgba(255,99,132,0.2)',
-                        borderColor: 'rgba(255,99,132,1)',
-                        pointBackgroundColor: 'rgba(255,99,132,1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(255,99,132,1)',
-                        data: [28, 48, 40, 19, 96, 27, 100]
-                    }
-                ]
-            },
-            chartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+            chartData: false
         }
     },
-
-    mounted() {}
+    methods: {
+        retrieveData: function () {
+            axios.get('/api/radarChartData.json').then((response) => {
+                this.chartData = response.data;
+            })
+        }
+    }
 }
 </script>
 

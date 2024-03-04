@@ -6,8 +6,9 @@
         <div class="card-body">
             <div class="datatables-wrap">
                 <DataTable
-                    :columns="columns"
-                    ajax="/src/api/dataTable.json"
+                    v-if="dataTableData"
+                    :columns="dataTableData.columns"
+                    :data="dataTableData.data"
                     class="display"
                     width="100%"
                 >
@@ -32,6 +33,12 @@
                         </tr>
                     </tfoot>
                 </DataTable>
+
+                <template v-else>
+                    <p>No data retrieved yet</p>
+                    <br />
+                    <button class="btn-action" @click="retrieveData">Get data</button>
+                </template>
             </div>
         </div>
     </div>
@@ -40,6 +47,7 @@
 <script>
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
+import axios from 'axios';
 
 DataTable.use(DataTablesCore);
 
@@ -50,14 +58,14 @@ export default {
     },
     data() {
         return {
-            columns: [
-                { data: 'name', title: 'Name' },
-                { data: 'position', title: 'Position' },
-                { data: 'office', title: 'Office' },
-                { data: 'extn', title: 'Extension' },
-                { data: 'start_date', title: 'Start date' },
-                { data: 'salary', title: 'Salary' },
-            ]
+            dataTableData: false
+        }
+    },
+    methods: {
+        retrieveData: function () {
+            axios.get('/api/dataTable.json').then((response) => {
+                this.dataTableData = response.data;
+            })
         }
     }
 }

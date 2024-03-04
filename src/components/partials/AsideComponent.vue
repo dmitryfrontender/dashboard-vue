@@ -58,18 +58,6 @@
                 </li>
             </ul>
         </div>
-        <div class="your-manager">
-            <div class="your-manager-title">
-                <span>Your manager</span>
-            </div>
-            <div class="manager flex-container align-center justify-sb">
-                <div class="foto-manager">
-                    <img src="@/assets/img/foto-one.png" alt="">
-                </div>
-                <div class="circle"></div>
-                <RouterLink to="/">Mikhael E.</RouterLink>
-            </div>
-        </div>
     </aside>
 </template>
 
@@ -140,47 +128,5 @@ export default {
 #aside .aside-menu ul li a [class*='icon-'] {
     font-size: 17px;
     margin-right: 15px;
-}
-
-.your-manager {
-    padding: 26px 52px 0 18px;
-    border-top: 1px solid #333;
-    margin-top: 25px;
-}
-
-.your-manager span {
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #9c9c9c;
-}
-
-.your-manager .manager {
-    margin-top: 18px;
-    position: relative;
-}
-
-.your-manager .manager a {
-    color: #56819f;
-}
-
-.your-manager .manager a:hover {
-    color: #f58220;
-}
-
-.your-manager .manager .circle {
-    padding: 6px 6px;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
-    background-color: #04ae00;
-    position: absolute;
-    top: 0;
-    left: 32px;
-}
-
-.your-manager .manager img {
-    width: 43px;
-    height: 43px;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
 }
 </style>

@@ -5,15 +5,23 @@
         </div>
         <div class="card-body">
             <div class="chart-wrap">
-                <Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" />
+                <Doughnut v-if="chartData" id="my-chart-id" :options="chartData.options" :data="chartData.data"/>
+
+                <template v-else>
+                    <p>No data retrieved yet</p>
+                    <br />
+                    <button class="btn-action" @click="retrieveData">Get data</button>
+                </template>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'vue-chartjs'
+import axios from 'axios';
+
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -24,23 +32,16 @@ export default {
     },
     data() {
         return {
-            chartData: {
-                labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-                datasets: [
-                    {
-                        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-                        data: [40, 20, 80, 10]
-                    }
-                ]
-            },
-            chartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-            }
+            chartData: false
         }
     },
-
-    mounted() {}
+    methods: {
+        retrieveData: function () {
+            axios.get('/api/doughnutChartData.json').then((response) => {
+                this.chartData = response.data;
+            })
+        }
+    }
 }
 </script>
 
