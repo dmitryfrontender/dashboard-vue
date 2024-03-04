@@ -52,43 +52,43 @@ export const globalStore = defineStore('store', {
     },
 
     retrieveBarChartData() {
-      axios.get('/api/barChartData.json').then((response) => {
+      axios.get('../api/barChartData.json').then((response) => {
         this.barChartData = response.data;
       })
     },
     retrieveBubbleChartData() {
-      axios.get('/api/bubbleChartData.json').then((response) => {
+      axios.get('../api/bubbleChartData.json').then((response) => {
         this.bubbleChartData = response.data;
       })
     },
     retrieveDoughnutChartData() {
-      axios.get('/api/doughnutChartData.json').then((response) => {
+      axios.get('../api/doughnutChartData.json').then((response) => {
         this.doughnutChartData = response.data;
       })
     },
     retrieveLineChartData() {
-      axios.get('/api/lineChartData.json').then((response) => {
+      axios.get('../api/lineChartData.json').then((response) => {
         this.lineChartData = response.data;
       })
     },
     retrievePolarChartData() {
-      axios.get('/api/polarAreaChartData.json').then((response) => {
+      axios.get('../api/polarAreaChartData.json').then((response) => {
         this.polarChartData = response.data;
       })
     },
     retrieveRadarChartData() {
-      axios.get('/api/radarChartData.json').then((response) => {
+      axios.get('../api/radarChartData.json').then((response) => {
         this.radarChartData = response.data;
       })
     },
     retrieveScatterChartData() {
-      axios.get('/api/scatterChartData.json').then((response) => {
+      axios.get('../api/scatterChartData.json').then((response) => {
         this.scatterChartData = response.data;
       })
     },
 
     retrieveDataTableData() {
-      axios.get('/api/dataTable.json').then((response) => {
+      axios.get('../api/dataTable.json').then((response) => {
         this.dataTableData = response.data;
       })
     }
